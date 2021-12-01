@@ -3,7 +3,6 @@ This is my first implementation of utf-8 validation LC problem:
 https://leetcode.com/problems/utf-8-validation/solution/
 """
 
-
 from typing import List
 
 
@@ -78,3 +77,7 @@ class Solution:
         return binary_format
 
 
+sol = Solution()
+assert sol.validUtf8([197, 130, 1]) == True
+assert sol.validUtf8([235, 140, 4]) == False
+print('Test cases passed')
