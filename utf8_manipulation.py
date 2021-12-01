@@ -9,9 +9,17 @@ from typing import List
 
 class Solution:
     def validUtf8(self, data: List[int]) -> bool:
+        # TODO: Fix
+        #  O(n): Go through the list once without finishing the execution
         binary_data = self.transformInteger2Binary(data)
+        # TODO: Avoid while loops
+        # O(n)
+        # 2 * n execution time
+        # It could be done in n
         while len(binary_data) > 0:
+            # cur_byte, cur_character would be a better name
             next_byte = binary_data[0]
+            # size_seq could be named n_bytes
             is_valid, size_seq = self.isNBytesSeq(next_byte)
 
             if not is_valid:
@@ -54,6 +62,7 @@ class Solution:
             binary_list.append(binary_i)
         return binary_list
 
+    # Python provides bin() native function for this
     def getBinaryString(self, integer: int) -> str:
         binary_format = ''
         integer_to_transform = integer % 256
