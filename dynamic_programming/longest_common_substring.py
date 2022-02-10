@@ -1,4 +1,4 @@
-# Leetcode:  Longest Common Substring
+# Leetcode:  Longest Common Substring (Medium)
 
 from typing import List, Optional
 
