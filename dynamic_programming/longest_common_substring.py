@@ -4,29 +4,42 @@ from typing import List, Optional
 
 
 class Solution:
-    table: List[List[Optional[bool]]]
+    table: List[List[bool]]
     i_lcs: int
     j_lcs: int
 
     def longestPalindrome(self, s: str) -> str:
         self.build_dp_table(s)
-
-        for candidate_palidrome_size in range(len(s), -1, -1):
-            for start_i in range(0, len(s) - candidate_palidrome_size + 1):
-                candidate = s[start_i: start_i+candidate_palidrome_size]
-                if self.is_palindrome(candidate, start_i,
-                                      start_i+candidate_palidrome_size-1):
-                    return candidate
+        return s[self.i_lcs: self.j_lcs+1]
 
     def build_dp_table(self, s: str) -> None:
-        for i in range(len(s)):
-            for j in range(i, len(s)):
-                if i == j:
-                    self.table[i][i] = True
-                elif j == i + 1:
-                    self.table[i][j] = s[i] == s[j]
-                else:
-                    self.table[i][j] = self.table[i+1][j-1] and s[i] == s[j]
+        self.i_lcs = 0
+        self.j_lcs = 0
+        self.table = [[False] * len(s) for i in range(len(s))]
+
+        # Initialize one and two letters strings
+        for i in range(len(s) - 1):
+            self.table[i][i] = True
+            if s[i] == s[i+1]:
+                self.table[i][i + 1] = True
+                self.track_lcs(i, i+1)
+
+        for palindrome_length in range(3, len(s) + 1):
+            i = 0
+            j = palindrome_length - 1
+            while j < len(s):
+                if self.table[i + 1][j - 1] and s[i] == s[j]:
+                    self.table[i][j] = True
+                    self.track_lcs(i, j)
+                i += 1
+                j += 1
+
+    def max_lcs_length(self) -> int:
+        return self.j_lcs - self.i_lcs + 1
+
+    def track_lcs(self, i: int, j: int) -> None:
+        self.i_lcs = i
+        self.j_lcs = j
 
     def is_palindrome(self, s: str, start: int, end: int) -> bool:
         if self.table[start][end]:
@@ -41,5 +54,6 @@ class Solution:
 
 
 sol = Solution()
-print(sol.longestPalindrome("babad"))
+print(sol.longestPalindrome("caba"))
+print(sol.longestPalindrome("aaaaa"))
 # print(sol.partition('aab'))
